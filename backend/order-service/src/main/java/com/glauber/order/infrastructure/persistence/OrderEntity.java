@@ -33,4 +33,5 @@ public class OrderEntity {
     public BigDecimal getTotalAmount() { return totalAmount; }
     public String getStatus() { return status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setStatus(String status) { this.status = status; }
 }
