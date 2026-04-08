@@ -2,6 +2,7 @@ package com.glauber.inventory.infrastructure.kafka;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.kafka.core.KafkaTemplate;
 import com.glauber.inventory.domain.entities.StockReservation;
 import com.glauber.inventory.infrastructure.persistence.StockReservationRepository;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,11 +15,14 @@ public class OrderCreatedConsumer {
 
     private final StockReservationRepository repository;
     private final ObjectMapper objectMapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     public OrderCreatedConsumer(StockReservationRepository repository,
-                                ObjectMapper objectMapper) {
+                                ObjectMapper objectMapper,
+                                KafkaTemplate<String, String> kafkaTemplate) {
         this.repository = repository;
         this.objectMapper = objectMapper;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @KafkaListener(topics = "order-created", groupId = "inventory-group")
@@ -28,6 +32,7 @@ public class OrderCreatedConsumer {
 
         StockReservation reservation = new StockReservation(orderId);
         repository.save(reservation);
+        kafkaTemplate.send("stock-reserved", event);
 
         System.out.println("ESTOQUE RESERVADO PARA PEDIDO: " + orderId);
     }
