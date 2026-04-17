@@ -1,6 +1,6 @@
 📍 Título
 
-<!-- escreva o titulo em seguida as tags da US e a descrição geral sobre o que foi implementado -->
+<!-- escreva o titulo em seguida a descrição geral sobre o que foi implementado -->
 
 📌 Descrição
 
